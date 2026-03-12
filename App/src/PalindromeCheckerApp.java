@@ -1,82 +1,67 @@
 /**
- * ================================================================
- * MAIN CLASS - PalindromeCheckerApp
- * ================================================================
+ * UseCase9PalindromeChecker
  *
- * Use Case 13: Performance Comparison of Palindrome Algorithm
- *
- * Objective:
- * Design a console-based Java program that checks if a string
- * is a palindrome and measures the execution time of the algorithm.
+ * Description: Checks whether a string is a palindrome
+ * using recursion to compare characters from start and end indices.
  *
  * Key Concepts:
- * - System.nanoTime() for measuring execution time
- * - Stack data structure for palindrome logic
- * - String normalization (ignoring case and non-alphanumeric chars)
+ * - Recursion
+ * - Base condition to terminate recursion
+ * - Call stack for method calls
+ *
+ * UC9: Recursive Palindrome Checker
+ * Goal: Check palindrome using recursion.
+ *
+ * Flow:
+ * 1. Recursive call compares start and end characters
+ * 2. Base condition stops recursion
+ * 3. Return true if all comparisons match
+ * 4. Print result
+ *
+ * @author Ananya
+ * @version 1.0
  */
-
-import java.util.Stack;
-import java.util.Scanner;
-
-// Define a common interface for palindrome algorithms
-interface PalindromeStrategy {
-    // Method to check if a string is palindrome
-    boolean check(String input);
-}
-
-// Implementation using Stack
-class StackStrategy implements PalindromeStrategy {
-
-    @Override
-    public boolean check(String input) {
-        // Normalize the string: remove non-alphanumeric characters and convert to lower case
-        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-
-        Stack<Character> stack = new Stack<>();
-
-        // Push all characters to the stack
-        for (char c : normalized.toCharArray()) {
-            stack.push(c);
-        }
-
-        // Compare characters by popping from stack
-        for (char c : normalized.toCharArray()) {
-            if (c != stack.pop()) {
-                return false; // Not a palindrome
-            }
-        }
-
-        return true; // Palindrome
-    }
-}
-
-// Main class containing program entry point
 public class PalindromeCheckerApp {
 
+    /**
+     * Application entry point.
+     * JVM starts execution from this method.
+     *
+     * @param args command line arguments (optional)
+     */
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        // Define input string
+        String input = "madam";
 
-        // Step 1: Take input from user
-        System.out.print("Input : ");
-        String input = scanner.nextLine();
+        // Call recursive function to check palindrome
+        boolean isPalindrome = isPalindromeRecursive(input, 0, input.length() - 1);
 
-        // Step 2: Create an instance of StackStrategy (our algorithm)
-        PalindromeStrategy strategy = new StackStrategy();
+        // Print the result
+        System.out.println("Input: " + input);
+        System.out.println("Is Palindrome? " + isPalindrome);
+    }
 
-        // Step 3: Measure execution time
-        long startTime = System.nanoTime();
-        boolean result = strategy.check(input); // Check palindrome
-        long endTime = System.nanoTime();
+    /**
+     * Recursive function to check palindrome
+     *
+     * @param str The input string
+     * @param start The starting index
+     * @param end The ending index
+     * @return true if palindrome, false otherwise
+     */
+    public static boolean isPalindromeRecursive(String str, int start, int end) {
+        // Base condition: if start >= end, all characters matched
+        if (start >= end) {
+            return true;
+        }
 
-        // Step 4: Display results
-        // Line 1: Palindrome result
-        System.out.println("Is Palindrome : " + result);
+        // If characters at start and end are not equal, not a palindrome
+        if (str.charAt(start) != str.charAt(end)) {
+            return false;
+        }
 
-        // Line 2: Execution time in nanoseconds
-        System.out.println("Execution time : " + (endTime - startTime) + " ns");
-
-        // Close scanner
-        scanner.close();
+        // Recur for next inner pair
+        return isPalindromeRecursive(str, start + 1, end - 1);
     }
 }
