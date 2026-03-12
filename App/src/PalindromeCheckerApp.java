@@ -1,82 +1,73 @@
+import java.util.*;
+
 /**
- * ================================================================
- * MAIN CLASS - PalindromeCheckerApp
- * ================================================================
+ * UseCase6PalindromeChecker
  *
- * Use Case 13: Performance Comparison of Palindrome Algorithm
+ * Description: Checks whether a string is a palindrome
+ * using both a Queue (FIFO) and a Stack (LIFO) to demonstrate
+ * the behavioral difference between these data structures.
  *
- * Objective:
- * Design a console-based Java program that checks if a string
- * is a palindrome and measures the execution time of the algorithm.
+ * - Enqueues characters into a queue
+ * - Pushes characters into a stack
+ * - Compares dequeue vs pop to validate palindrome
  *
  * Key Concepts:
- * - System.nanoTime() for measuring execution time
- * - Stack data structure for palindrome logic
- * - String normalization (ignoring case and non-alphanumeric chars)
+ * - Queue (FIFO)
+ * - Stack (LIFO)
+ * - Enqueue & Dequeue operations
+ * - Pop operation
+ * - Logical comparison for palindrome
+ *
+ * UC6: Queue + Stack Based Palindrome Check
+ * Goal: Demonstrate FIFO vs LIFO using Queue and Stack.
+ *
+ * Flow:
+ * 1. Enqueue characters into queue
+ * 2. Push characters into stack
+ * 3. Compare dequeue vs pop
+ * 4. Print result
+ *
+ * @author Ananya
+ * @version 1.0
  */
+public class PalindromeCheckerApp {
 
-import java.util.Stack;
-import java.util.Scanner;
+    /**
+     * Application entry point.
+     * JVM starts execution from this method.
+     *
+     * @param args command line arguments (optional)
+     */
+    public static void main(String[] args) {
 
-// Define a common interface for palindrome algorithms
-interface PalindromeStrategy {
-    // Method to check if a string is palindrome
-    boolean check(String input);
-}
+        // Input string to check
+        String input = "civic";
 
-// Implementation using Stack
-class StackStrategy implements PalindromeStrategy {
+        // Create a queue to store characters in FIFO order
+        Queue<Character> queue = new LinkedList<>();
 
-    @Override
-    public boolean check(String input) {
-        // Normalize the string: remove non-alphanumeric characters and convert to lower case
-        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-
+        // Create a stack to store characters in LIFO order
         Stack<Character> stack = new Stack<>();
 
-        // Push all characters to the stack
-        for (char c : normalized.toCharArray()) {
-            stack.push(c);
+        // Insert each character into both queue and stack
+        for (char c : input.toCharArray()) {
+            queue.add(c);   // Enqueue character
+            stack.push(c);  // Push character
         }
 
-        // Compare characters by popping from stack
-        for (char c : normalized.toCharArray()) {
-            if (c != stack.pop()) {
-                return false; // Not a palindrome
+        // Assume the string is a palindrome
+        boolean isPalindrome = true;
+
+        // Compare queue (FIFO) with stack (LIFO)
+        while (!queue.isEmpty()) {
+            if (queue.remove() != stack.pop()) {
+                isPalindrome = false;
+                break; // Stop early if mismatch found
             }
         }
 
-        return true; // Palindrome
-    }
-}
-
-// Main class containing program entry point
-public class PalindromeCheckerApp {
-
-    public static void main(String[] args) {
-
-        Scanner scanner = new Scanner(System.in);
-
-        // Step 1: Take input from user
-        System.out.print("Input : ");
-        String input = scanner.nextLine();
-
-        // Step 2: Create an instance of StackStrategy (our algorithm)
-        PalindromeStrategy strategy = new StackStrategy();
-
-        // Step 3: Measure execution time
-        long startTime = System.nanoTime();
-        boolean result = strategy.check(input); // Check palindrome
-        long endTime = System.nanoTime();
-
-        // Step 4: Display results
-        // Line 1: Palindrome result
-        System.out.println("Is Palindrome : " + result);
-
-        // Line 2: Execution time in nanoseconds
-        System.out.println("Execution time : " + (endTime - startTime) + " ns");
-
-        // Close scanner
-        scanner.close();
+        // Print input and result
+        System.out.println("Input: " + input);
+        System.out.println("Is Palindrome? " + isPalindrome);
     }
 }
