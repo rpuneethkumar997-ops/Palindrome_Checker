@@ -1,82 +1,73 @@
 /**
- * ================================================================
- * MAIN CLASS - PalindromeCheckerApp
- * ================================================================
+ * UseCase7PalindromeChecker
  *
- * Use Case 13: Performance Comparison of Palindrome Algorithm
+ * Description: Checks whether a string is a palindrome
+ * using a Deque (Double-Ended Queue) to efficiently compare
+ * characters from both front and rear.
  *
- * Objective:
- * Design a console-based Java program that checks if a string
- * is a palindrome and measures the execution time of the algorithm.
+ * - Inserts characters into a deque
+ * - Removes first and last characters iteratively
+ * - Compares them to validate palindrome
  *
  * Key Concepts:
- * - System.nanoTime() for measuring execution time
- * - Stack data structure for palindrome logic
- * - String normalization (ignoring case and non-alphanumeric chars)
+ * - Deque (Double-Ended Queue)
+ * - Front & Rear access
+ * - Optimized data handling without extra reversal structures
+ *
+ * UC7: Deque-Based Optimized Palindrome Checker
+ * Goal: Use Deque to compare front and rear elements.
+ *
+ * Flow:
+ * 1. Insert characters into deque
+ * 2. Remove first & last characters
+ * 3. Compare until deque is empty or mismatch found
+ * 4. Print result
+ *
+ * @author Ananya
+ * @version 1.0
  */
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-import java.util.Stack;
-import java.util.Scanner;
+public class PalindromeCheckerApp {
 
-// Define a common interface for palindrome algorithms
-interface PalindromeStrategy {
-    // Method to check if a string is palindrome
-    boolean check(String input);
-}
+    /**
+     * Application entry point.
+     * JVM starts execution from this method.
+     *
+     * @param args command line arguments (optional)
+     */
+    public static void main(String[] args) {
 
-// Implementation using Stack
-class StackStrategy implements PalindromeStrategy {
+        // Step 1: Define the input string to check
+        String input = "refer";
 
-    @Override
-    public boolean check(String input) {
-        // Normalize the string: remove non-alphanumeric characters and convert to lower case
-        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        // Step 2: Create a Deque (Double-Ended Queue) to store characters
+        // Deque allows insertion and removal from both ends (front & rear)
+        Deque<Character> deque = new ArrayDeque<>();
 
-        Stack<Character> stack = new Stack<>();
-
-        // Push all characters to the stack
-        for (char c : normalized.toCharArray()) {
-            stack.push(c);
+        // Step 3: Add each character of the input string into the deque
+        for (char c : input.toCharArray()) {
+            deque.add(c); // Adds to the rear by default
         }
 
-        // Compare characters by popping from stack
-        for (char c : normalized.toCharArray()) {
-            if (c != stack.pop()) {
-                return false; // Not a palindrome
+        // Step 4: Assume the string is a palindrome initially
+        boolean isPalindrome = true;
+
+        // Step 5: Compare characters from front and rear until deque has 0 or 1 element
+        while (deque.size() > 1) {
+            // Remove and compare first and last characters
+            if (deque.removeFirst() != deque.removeLast()) {
+                // If mismatch found, it's not a palindrome
+                isPalindrome = false;
+                break; // Exit loop immediately on mismatch
             }
         }
 
-        return true; // Palindrome
-    }
-}
+        // Step 6: Print the input string
+        System.out.println("Input: " + input);
 
-// Main class containing program entry point
-public class PalindromeCheckerApp {
-
-    public static void main(String[] args) {
-
-        Scanner scanner = new Scanner(System.in);
-
-        // Step 1: Take input from user
-        System.out.print("Input : ");
-        String input = scanner.nextLine();
-
-        // Step 2: Create an instance of StackStrategy (our algorithm)
-        PalindromeStrategy strategy = new StackStrategy();
-
-        // Step 3: Measure execution time
-        long startTime = System.nanoTime();
-        boolean result = strategy.check(input); // Check palindrome
-        long endTime = System.nanoTime();
-
-        // Step 4: Display results
-        // Line 1: Palindrome result
-        System.out.println("Is Palindrome : " + result);
-
-        // Line 2: Execution time in nanoseconds
-        System.out.println("Execution time : " + (endTime - startTime) + " ns");
-
-        // Close scanner
-        scanner.close();
+        // Step 7: Print whether the string is a palindrome
+        System.out.println("Is Palindrome? " + isPalindrome);
     }
 }
