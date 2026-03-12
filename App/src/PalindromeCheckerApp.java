@@ -1,82 +1,62 @@
 /**
- * ================================================================
- * MAIN CLASS - PalindromeCheckerApp
- * ================================================================
+ * PalindromeCheckerApp
  *
- * Use Case 13: Performance Comparison of Palindrome Algorithm
+ * Description: Checks whether a string is a palindrome
+ * using character array comparison with two-pointer technique.
  *
- * Objective:
- * Design a console-based Java program that checks if a string
- * is a palindrome and measures the execution time of the algorithm.
+ * - Converts string to char array
+ * - Compares characters from both ends
+ * - Stops early if mismatch found
  *
  * Key Concepts:
- * - System.nanoTime() for measuring execution time
- * - Stack data structure for palindrome logic
- * - String normalization (ignoring case and non-alphanumeric chars)
+ * - Arrays
+ * - Two-pointer technique
+ * - Boolean flag logic
+ *
+ * @author Student
+ * @version 1.0
  */
-
-import java.util.Stack;
-import java.util.Scanner;
-
-// Define a common interface for palindrome algorithms
-interface PalindromeStrategy {
-    // Method to check if a string is palindrome
-    boolean check(String input);
-}
-
-// Implementation using Stack
-class StackStrategy implements PalindromeStrategy {
-
-    @Override
-    public boolean check(String input) {
-        // Normalize the string: remove non-alphanumeric characters and convert to lower case
-        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-
-        Stack<Character> stack = new Stack<>();
-
-        // Push all characters to the stack
-        for (char c : normalized.toCharArray()) {
-            stack.push(c);
-        }
-
-        // Compare characters by popping from stack
-        for (char c : normalized.toCharArray()) {
-            if (c != stack.pop()) {
-                return false; // Not a palindrome
-            }
-        }
-
-        return true; // Palindrome
-    }
-}
-
-// Main class containing program entry point
 public class PalindromeCheckerApp {
 
+    /**
+     * Application entry point.
+     * JVM starts execution from this method.
+     *
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        // Declare and initialize the input string
+        String input = "radar";
 
-        // Step 1: Take input from user
-        System.out.print("Input : ");
-        String input = scanner.nextLine();
+        // Convert the string into a character array
+        char[] chars = input.toCharArray();
 
-        // Step 2: Create an instance of StackStrategy (our algorithm)
-        PalindromeStrategy strategy = new StackStrategy();
+        // Initialize pointer at the beginning of the array
+        int start = 0;
 
-        // Step 3: Measure execution time
-        long startTime = System.nanoTime();
-        boolean result = strategy.check(input); // Check palindrome
-        long endTime = System.nanoTime();
+        // Initialize pointer at the end of the array
+        int end = chars.length - 1;
 
-        // Step 4: Display results
-        // Line 1: Palindrome result
-        System.out.println("Is Palindrome : " + result);
+        // Assume the string is palindrome initially
+        boolean isPalindrome = true;
 
-        // Line 2: Execution time in nanoseconds
-        System.out.println("Execution time : " + (endTime - startTime) + " ns");
+        // Compare characters from both ends moving inward
+        while (start < end) {
 
-        // Close scanner
-        scanner.close();
+            // If mismatch found, it is not a palindrome
+            if (chars[start] != chars[end]) {
+                isPalindrome = false;
+                break;
+            }
+
+            // Move pointers toward center
+            start++;
+            end--;
+        }
+
+        // Display input and result
+        System.out.println("Input: " + input);
+        System.out.println("Is Palindrome? " + isPalindrome);
     }
 }
