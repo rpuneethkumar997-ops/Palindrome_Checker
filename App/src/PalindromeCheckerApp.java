@@ -1,82 +1,45 @@
 /**
- * ================================================================
- * MAIN CLASS - PalindromeCheckerApp
- * ================================================================
+ * PalindromeCheckerApp
  *
- * Use Case 13: Performance Comparison of Palindrome Algorithm
+ * Description:
+ * Checks whether a predefined string is a palindrome
+ * using the two-pointer technique.
  *
- * Objective:
- * Design a console-based Java program that checks if a string
- * is a palindrome and measures the execution time of the algorithm.
+ * - Compares characters from both ends
+ * - Stops immediately if mismatch found
  *
- * Key Concepts:
- * - System.nanoTime() for measuring execution time
- * - Stack data structure for palindrome logic
- * - String normalization (ignoring case and non-alphanumeric chars)
+ * @author Student
+ * @version 2.0
  */
-
-import java.util.Stack;
-import java.util.Scanner;
-
-// Define a common interface for palindrome algorithms
-interface PalindromeStrategy {
-    // Method to check if a string is palindrome
-    boolean check(String input);
-}
-
-// Implementation using Stack
-class StackStrategy implements PalindromeStrategy {
-
-    @Override
-    public boolean check(String input) {
-        // Normalize the string: remove non-alphanumeric characters and convert to lower case
-        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-
-        Stack<Character> stack = new Stack<>();
-
-        // Push all characters to the stack
-        for (char c : normalized.toCharArray()) {
-            stack.push(c);
-        }
-
-        // Compare characters by popping from stack
-        for (char c : normalized.toCharArray()) {
-            if (c != stack.pop()) {
-                return false; // Not a palindrome
-            }
-        }
-
-        return true; // Palindrome
-    }
-}
-
-// Main class containing program entry point
 public class PalindromeCheckerApp {
 
+    /**
+     * Application entry point.
+     *
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        // Predefined string
+        String str = "madam";
 
-        // Step 1: Take input from user
-        System.out.print("Input : ");
-        String input = scanner.nextLine();
+        int left = 0;
+        int right = str.length() - 1;
+        boolean isPalindrome = true;
 
-        // Step 2: Create an instance of StackStrategy (our algorithm)
-        PalindromeStrategy strategy = new StackStrategy();
+        // Two-pointer comparison
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) {
+                isPalindrome = false;
+                break;
+            }
+            left++;
+            right--;
+        }
 
-        // Step 3: Measure execution time
-        long startTime = System.nanoTime();
-        boolean result = strategy.check(input); // Check palindrome
-        long endTime = System.nanoTime();
-
-        // Step 4: Display results
-        // Line 1: Palindrome result
-        System.out.println("Is Palindrome : " + result);
-
-        // Line 2: Execution time in nanoseconds
-        System.out.println("Execution time : " + (endTime - startTime) + " ns");
-
-        // Close scanner
-        scanner.close();
+        // Output
+        System.out.println("Input text: " + str);
+        System.out.println("Is Palindrome: " + isPalindrome);
     }
 }
+
